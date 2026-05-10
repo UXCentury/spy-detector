@@ -16,13 +16,13 @@ Spy Detector is a **detection** tool. It does not block, quarantine, or remove p
 - **abuse.ch threat intel** — ThreatFox (domains/IPs/URLs/hashes), URLhaus (hosts/URLs), MalwareBazaar hash lookup. Bundled snapshots, manual refresh, no telemetry.
 - **Beaconing detection** — inter-arrival jitter analysis on per-`(pid, remote)` connection samples.
 - **Process tree anomalies** — curated parent→child rules (e.g. Word spawning PowerShell).
-- **Thread injection** — ETW Kernel-Process thread-start events for cross-process thread creation and thread bursts (elevated).
+- **Thread injection** — ETW Kernel-Process thread-start events for cross-process thread creation and thread bursts (elevated). Events pass a multi-gate filter before alerting (see [Thread injection filter](#thread-injection-filter)); burst detection uses the same chain so self-target and benign same-image bursts do not surface as user-facing alerts.
 - **Camera / microphone access** — Media Foundation `IMFSensorActivityMonitor` for camera, registry consent store for mic; per-PID activity logging.
 - **Keyboard hooks** — ETW `Microsoft-Windows-Win32k` event 1002.
 - **Clipboard polling** — ETW Win32k events 459 / 460 / 463 with per-PID counters.
 - **Hidden window + network** — `EnumWindows` correlated with active TCP for hidden-UI heuristic.
 - **Screen-capture heuristic** — hidden window + unsigned + sustained CPU correlation.
-- **Authenticode** — `WinVerifyTrust` signature checks with path-bucket reasoning (signed Microsoft / signed third-party / unsigned / user-writable).
+- **Authenticode** — `WinVerifyTrust` (`WTD_CHOICE_FILE`) plus catalog-backed signing: on `TRUST_E_NOSIGNATURE`, the backend enumerates Windows catalog databases (`CryptCATAdmin*`), then applies a path heuristic for `%WINDIR%\System32`, `SysWOW64`, and `WinSxS`. System binaries distributed only via catalog (for example `conhost.exe`, `cmd.exe`, `RuntimeBroker.exe`) resolve as signed instead of **Unsigned**.
 - **Autostart delta** — HKLM / HKCU Run + RunOnce + WOW6432Node, both Startup folders, Task Scheduler logon/boot triggers, with 24h "recently added" tracking.
 - **AMSI** — Antimalware Scan Interface provider for script content (PowerShell, VBA, JS, .NET) with suspicious-string heuristics.
 - **YARA-X** — bundled APT / Windows malware / stalkerware rule sets, scanning unsigned user-writable binaries.
@@ -41,6 +41,7 @@ Spy Detector is a **detection** tool. It does not block, quarantine, or remove p
 ### Realtime + scheduling
 
 - ETW monitoring for process create/exit, image-load injection (elevated), Win32k hooks, clipboard, thread create.
+- **Process ETW (beta)** ships **off** by default on fresh installs. Turning it on in **Overview → Detection components** shows a confirmation modal about false-positive risk and adds a **BETA** chip next to the toggle. **Settings → Detection** includes a **Process ETW ignore list** for `basename` entries (for example `git.exe`) or full path patterns to exclude specific apps from monitoring.
 - Periodic background scans, 1 min – 24 h, configurable.
 - Periodic browser-history rescans.
 - Live activity feed for process launches and thread events with classification (system / signed / unsigned / user-writable).
@@ -73,7 +74,7 @@ Spy Detector is a **detection** tool. It does not block, quarantine, or remove p
 
 ### Translations
 
-- 25 supported locales. 8 priority locales (en-US, hy-AM, ar, de, es, fr, ru, zh-CN) at 100% coverage with RTL support. See [Translations](#translations) for details.
+- 25 supported locales. English (en-US) and Armenian (hy-AM) have full in-app coverage; Arabic, German, Spanish, French, Russian, and Simplified Chinese priority patches each cover **94%** of UI strings (remaining keys fall back to English). RTL support for Arabic and Hebrew. See [Translations](#translations) for measured coverage.
 
 ### Operations
 
@@ -90,6 +91,7 @@ Spy Detector is a **detection** tool. It does not block, quarantine, or remove p
 - **Microsoft Defender / EDR can exhaust ETW sessions.** On systems with many ETW consumers, the kernel session pool can fill up and our subscriptions return *"Insufficient system resources"*. Auto-cleanup of stale `spy-detector-*` sessions runs at startup; if the issue persists, reboot or close other ETW consumers (Process Monitor, Wireshark with NPM, etc.).
 - **AMSI provider not registered.** The provider DLL must be Authenticode-signed to be loaded by Windows. Until SignPath enrollment is complete, AMSI shows **Inactive** even when elevated.
 - **First-launch table latency.** The first cold launch after install can stall briefly while caches warm; subsequent launches respond within ~1s. The splash screen now waits on real backend readiness signals before showing the main window, but very slow disks may still see a longer initial wait.
+- **Developer-oriented noise when Process ETW is enabled.** Beta process telemetry can still highlight legitimate IDEs, shells, and helpers. Prefer leaving **Process ETW** disabled unless you need it; if you enable it, use **Settings → Detection → Process ETW ignore list** (basename or path patterns) and expect occasional tuning. See [FALSE_POSITIVES.md](./FALSE_POSITIVES.md) for broader benign-vs-signal context.
 
 ## Planned
 
@@ -104,13 +106,13 @@ The interface is fully translated where coverage is 100%; lower-coverage locales
 | --- | --- | --- |
 | English (United States) | `en-US` | 100% |
 | Հայերեն | `hy-AM` | 100% |
-| العربية | `ar` | 100% |
-| Deutsch | `de` | 100% |
-| Español | `es` | 100% |
-| Français | `fr` | 100% |
-| Русский | `ru` | 100% |
-| 简体中文 | `zh-CN` | 100% |
-| English (United Kingdom) | `en-GB` | 5% |
+| العربية | `ar` | 94% |
+| Deutsch | `de` | 94% |
+| Español | `es` | 94% |
+| Français | `fr` | 94% |
+| Русский | `ru` | 94% |
+| 简体中文 | `zh-CN` | 94% |
+| English (United Kingdom) | `en-GB` | 4% |
 | Português (Brasil) | `pt-BR` | 2% |
 | Italiano | `it` | 2% |
 | 日本語 | `ja` | 2% |
@@ -118,17 +120,19 @@ The interface is fully translated where coverage is 100%; lower-coverage locales
 | Polski | `pl` | 2% |
 | Türkçe | `tr` | 2% |
 | Українська | `uk` | 2% |
-| فارسی | `fa` | 1% |
-| עברית | `he` | 1% |
-| Bahasa Indonesia | `id` | 1% |
-| 한국어 | `ko` | 1% |
-| Tiếng Việt | `vi` | 1% |
-| 繁體中文 | `zh-TW` | 1% |
+| فارسی | `fa` | 2% |
+| עברית | `he` | 2% |
+| Bahasa Indonesia | `id` | 2% |
+| 한국어 | `ko` | 2% |
+| Tiếng Việt | `vi` | 2% |
+| 繁體中文 | `zh-TW` | 2% |
 | हिन्दी | `hi` | 1% |
 | বাংলা | `bn` | 1% |
 | ไทย | `th` | 1% |
 
-_Coverage measured against 667 total UI strings as of 2026-05-09._
+_Coverage uses every key in [`src/lib/i18n/english.ts`](./src/lib/i18n/english.ts) as the denominator (**727** strings as of 2026-05-10). A locale counts a key when the merged string map (`catalog.ts`, including splash/bootstrap merges and locale patches) has a **non-empty** value for that language; omitted keys fall back to English and are not counted toward that locale’s percentage._
+
+_Patch file sizes alone (for example `locale-extra-*.ts`) do not equal shipped coverage: Arabic, German, Russian, Simplified Chinese, etc. combine inline core tables in [`priority-locales.ts`](./src/lib/i18n/priority-locales.ts) with their `locale-extra-*` files._
 
 ## Architecture
 
@@ -150,9 +154,9 @@ _Coverage measured against 667 total UI strings as of 2026-05-09._
 | Keyboard hooks | ETW `Microsoft-Windows-Win32k`, event 1002 |
 | Clipboard polling | Win32k events 459/460/463 |
 | Process tree anomalies | Curated parent→child rules |
-| Thread injection | ETW Kernel-Process thread-start cross-process detection (elevated) |
+| Thread injection | ETW Kernel-Process thread-start cross-process detection (elevated), multi-gate filter + burst path |
 | Beaconing | Inter-arrival jitter analysis |
-| Unsigned binary | `WinVerifyTrust` + path checks |
+| Unsigned binary | `WinVerifyTrust` + catalog enumeration + System32 / SysWOW64 / WinSxS heuristic + path checks |
 | Hidden window + network | `EnumWindows` + active TCP |
 | Autostart delta | HKLM/HKCU Run + RunOnce + WOW6432Node + Startup folders + Task Scheduler |
 | Suspicious DLL loads | ETW Kernel-Process image-load (elevated) |
@@ -161,6 +165,22 @@ _Coverage measured against 667 total UI strings as of 2026-05-09._
 | YARA-X | Bundled APT / Windows malware / stalkerware rules on user-writable binaries |
 | Dev-infra abuse | Malicious GitHub, paste sites, IPFS, Discord/Telegram CDN, shorteners |
 | Browser history | Chrome/Edge/Brave/Firefox history matched against the full IOC catalog |
+
+## Thread injection filter
+
+Cross-process thread-start and thread-burst signals pass the same Rust filter chain in `src-tauri/src/thread_injection.rs` before user-facing alerts:
+
+- Drop in-process creates (source PID equals target PID).
+- Drop when either side is the Spy Detector executable (`spy-detector.exe`).
+- Drop signed same-basename pairs from the same publisher (multi-process hosts such as WebView2).
+- Drop kernel-issued threads (for example source PID 4 **System**, **Registry**).
+- Drop Service Control Manager (`services.exe`) spawning a signed service image.
+- Drop curated benign parent→child pairs (Rust toolchain, MSYS bash, Cursor→`git`, Node→`git`, and similar).
+- Require matching publisher information when both images are signed (same-publisher equality).
+- Apply a cooldown (one alert per source PID per 60 seconds).
+- Downgrade severity when only lower-confidence signals remain.
+
+Burst clustering reuses this pipeline so self-injection, same-image bursts (for example `spy-detector.exe`→`spy-detector.exe`, `LogiOverlay.exe`→`LogiOverlay.exe`), and same-publisher noise are suppressed consistently.
 
 ## Privacy
 

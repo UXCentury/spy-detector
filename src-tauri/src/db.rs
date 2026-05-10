@@ -124,6 +124,13 @@ fn init_schema(conn: &Connection) -> rusqlite::Result<()> {
             note TEXT,
             last_observed_at TEXT NOT NULL
         );
+        CREATE TABLE IF NOT EXISTS etw_ignore_list (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            pattern TEXT NOT NULL COLLATE NOCASE UNIQUE,
+            kind TEXT NOT NULL CHECK(kind IN ('basename', 'path')),
+            note TEXT,
+            created_at INTEGER NOT NULL
+        );
         ",
     )?;
     migrate_findings_suspicious_column(conn)?;
@@ -389,7 +396,7 @@ fn seed_settings_defaults(conn: &Connection) -> rusqlite::Result<()> {
         ("tray_alerts_enabled", "1"),
         ("diagnostic_logging", "0"),
         ("thread_injection_scanner_enabled", "1"),
-        ("process_etw_enabled", "1"),
+        ("process_etw_enabled", "0"),
         ("win32k_etw_enabled", "1"),
         ("dns_etw_enabled", "1"),
         ("camera_monitor_enabled", "1"),

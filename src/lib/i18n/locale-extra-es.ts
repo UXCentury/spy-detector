@@ -493,4 +493,31 @@ export const SPANISH_EXTRA: Partial<Record<StringKey, string>> = {
   "browserHistory.toast.closeFailed":
     "No se pudo cerrar {browser} (quedan {count} procesos)",
   "browserHistory.toast.forceClosed": "{browser} cerrado forzosamente",
+
+  // Process ETW beta + ignore list (en-US fallback)
+  "overview.components.processEtw.beta": "BETA",
+  "overview.processEtwConfirm.title": "Enable Process ETW (Beta)",
+  "overview.processEtwConfirm.bodyBefore":
+    "Process ETW monitoring is currently in beta and may produce false-positive alerts for legitimate developer tools, browsers, and system services. You can manage exceptions in ",
+  "overview.processEtwConfirm.bodyBold": "Settings → Detection → Process ETW ignore list",
+  "overview.processEtwConfirm.bodyAfter": ". Enable anyway?",
+  "overview.processEtwConfirm.cancel": "Cancel",
+  "overview.processEtwConfirm.confirm": "Enable Beta Monitor",
+  "settings.detection.etwIgnoreList.title": "Process ETW ignore list",
+  "settings.detection.etwIgnoreList.description":
+    "Add executables to skip Process ETW monitoring (thread events, image loads). Useful for developer tools and apps known to produce false positives.",
+  "settings.detection.etwIgnoreList.patternPlaceholder":
+    "git.exe or C:\\Path\\to\\app.exe",
+  "settings.detection.etwIgnoreList.notePlaceholder": "Optional note",
+  "settings.detection.etwIgnoreList.add": "Add",
+  "settings.detection.etwIgnoreList.empty":
+    "No ignored entries yet. Add a basename or full path to suppress Process ETW alerts for it.",
+  "settings.detection.etwIgnoreList.kind.basename": "basename",
+  "settings.detection.etwIgnoreList.kind.path": "path",
+  "settings.detection.etwIgnoreList.removeAria": "Remove ignore entry",
+  "settings.detection.etwIgnoreList.toastAdded": "Ignore entry added",
+  "settings.detection.etwIgnoreList.toastRemoved": "Ignore entry removed",
+  "settings.detection.etwIgnoreList.toastDuplicate":
+    "That pattern is already in the ignore list.",
+  "settings.detection.etwIgnoreList.toastEmpty": "Enter a basename or path.",
 };

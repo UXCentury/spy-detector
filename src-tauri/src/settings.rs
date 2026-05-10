@@ -26,7 +26,7 @@ pub struct AppSettings {
     pub diagnostic_logging: bool,
     #[serde(default = "default_bool_true")]
     pub thread_injection_scanner_enabled: bool,
-    #[serde(default = "default_bool_true")]
+    #[serde(default)]
     pub process_etw_enabled: bool,
     #[serde(default = "default_bool_true")]
     pub win32k_etw_enabled: bool,
@@ -75,7 +75,7 @@ pub fn load_app_settings(conn: &Connection) -> Result<AppSettings, String> {
     let diagnostic_logging = read_diagnostic_logging(conn).unwrap_or(false);
     let thread_injection_scanner_enabled =
         read_thread_injection_scanner_enabled(conn).unwrap_or(true);
-    let process_etw_enabled = read_process_etw_enabled(conn).unwrap_or(true);
+    let process_etw_enabled = read_process_etw_enabled(conn).unwrap_or(false);
     let win32k_etw_enabled = read_win32k_etw_enabled(conn).unwrap_or(true);
     let dns_etw_enabled = read_dns_etw_enabled(conn).unwrap_or(true);
     let camera_monitor_enabled = read_camera_monitor_enabled(conn).unwrap_or(true);
@@ -277,7 +277,16 @@ fn read_bool_setting_default_true(conn: &Connection, key: &str) -> Result<bool, 
 }
 
 pub fn read_process_etw_enabled(conn: &Connection) -> Result<bool, String> {
-    read_bool_setting_default_true(conn, "process_etw_enabled")
+    let v: Result<String, rusqlite::Error> = conn.query_row(
+        "SELECT value FROM user_settings WHERE key = 'process_etw_enabled'",
+        [],
+        |r| r.get(0),
+    );
+    match v {
+        Ok(s) => Ok(s == "1" || s.eq_ignore_ascii_case("true")),
+        Err(rusqlite::Error::QueryReturnedNoRows) => Ok(false),
+        Err(e) => Err(e.to_string()),
+    }
 }
 
 pub fn read_win32k_etw_enabled(conn: &Connection) -> Result<bool, String> {
@@ -447,7 +456,7 @@ mod tests {
     fn detection_runtime_toggles_default_true_and_round_trip() {
         let conn = fresh_db();
         let s = load_app_settings(&conn).expect("load settings");
-        assert!(s.process_etw_enabled);
+        assert!(!s.process_etw_enabled);
         assert!(s.win32k_etw_enabled);
         assert!(s.dns_etw_enabled);
         assert!(s.camera_monitor_enabled);

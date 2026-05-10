@@ -74,6 +74,15 @@ export const ARMENIAN: Record<StringKey, string> = {
     "Միջուկային պատկերի բեռնման իրադարձությունների և որոշ գործընթացների մետատվյալների համար պահանջվում են ադմինիստրատորի իրավունքներ։",
   "overview.components.processEtw.toggleAria":
     "Միացնել կամ անջատել Process ETW հսկողությունը",
+  "overview.components.processEtw.beta": "ՓՈՐՁՆԱԿԱՆ",
+  "overview.processEtwConfirm.title": "Միացնել Process ETW (փորձնական)",
+  "overview.processEtwConfirm.bodyBefore":
+    "Process ETW հսկողությունը ներկայումս փորձնական է և կարող է կեղծ դրական ահազանգեր տալ օրինական մշակողական գործիքների, բրաուզերների և համակարգային ծառայությունների համար։ Բացառությունները կարող եք կառավարել ",
+  "overview.processEtwConfirm.bodyBold":
+    "Կարգավորումներ → Հայտնաբերում → Process ETW անտեսման ցանկ",
+  "overview.processEtwConfirm.bodyAfter": " բաժնում։ Միացնե՞լ ամեն դեպքում։",
+  "overview.processEtwConfirm.cancel": "Չեղարկել",
+  "overview.processEtwConfirm.confirm": "Միացնել փորձնական հսկողությունը",
   "overview.components.win32kEtw.name": "Win32k ETW",
   "overview.components.win32kEtw.description":
     "Հայտնաբերում է ստեղնաշարի hook-երի տեղադրումները և clipboard-ի օգտագործման օրինակներ։",
@@ -620,6 +629,23 @@ export const ARMENIAN: Record<StringKey, string> = {
   "settings.detection.threadInjection.title": "Thread injection scanner",
   "settings.detection.threadInjection.description":
     "Detect cross-process thread creation that may indicate code injection. Turn off to silence alerts on developer machines.",
+  "settings.detection.etwIgnoreList.title": "Process ETW անտեսման ցանկ",
+  "settings.detection.etwIgnoreList.description":
+    "Ավելացրեք կատարվող ֆայլեր՝ Process ETW հսկողությունը բաց թողնելու համար (ելային իրադարձություններ, պատկերի բեռնումներ)։ Օգտակար է կեղծ դրական ահազանգեր տվող մշակողական գործիքների համար։",
+  "settings.detection.etwIgnoreList.patternPlaceholder":
+    "git.exe կամ C:\\Path\\to\\app.exe",
+  "settings.detection.etwIgnoreList.notePlaceholder": "Լրացուցիչ նշում",
+  "settings.detection.etwIgnoreList.add": "Ավելացնել",
+  "settings.detection.etwIgnoreList.empty":
+    "Դեռ անտեսման գրառումներ չկան։ Ավելացրեք բազային անուն կամ ամբողջական ճանապարհ՝ Process ETW ահազանգերը դրանց համար կասեցնելու համար։",
+  "settings.detection.etwIgnoreList.kind.basename": "basename",
+  "settings.detection.etwIgnoreList.kind.path": "path",
+  "settings.detection.etwIgnoreList.removeAria": "Հեռացնել անտեսման գրառումը",
+  "settings.detection.etwIgnoreList.toastAdded": "Անտեսման գրառումը ավելացվեց",
+  "settings.detection.etwIgnoreList.toastRemoved": "Անտեսման գրառումը հեռացվեց",
+  "settings.detection.etwIgnoreList.toastDuplicate":
+    "Այդ օրինակը արդեն կա անտեսման ցանկում։",
+  "settings.detection.etwIgnoreList.toastEmpty": "Մուտքագրեք basename կամ ճանապարհ։",
   "settings.toast.detectionSaved": "Detection settings saved",
   "event.amsiDetection": "Suspicious script detected",
   "event.yaraMatch": "YARA rule match",

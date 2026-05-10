@@ -644,6 +644,67 @@ pub async fn list_allowlist(
         .map_err(|e| e.to_string())?
 }
 
+fn list_etw_ignored_inner(state: &AppState) -> Result<Vec<crate::etw_ignore::IgnoreEntry>, String> {
+    let db = state.db.lock().map_err(|e| e.to_string())?;
+    crate::etw_ignore::list(&db).map_err(|e| e.to_string())
+}
+
+#[tauri::command(rename_all = "camelCase")]
+pub async fn list_etw_ignored(
+    state: State<'_, AppState>,
+) -> Result<Vec<crate::etw_ignore::IgnoreEntry>, String> {
+    let st = state.inner().clone();
+    tauri::async_runtime::spawn_blocking(move || list_etw_ignored_inner(&st))
+        .await
+        .map_err(|e| e.to_string())?
+}
+
+fn add_etw_ignored_inner(
+    state: &AppState,
+    pattern: String,
+    note: Option<String>,
+) -> Result<(), String> {
+    let trimmed = pattern.trim().to_string();
+    if trimmed.is_empty() {
+        return Err("Pattern cannot be empty.".into());
+    }
+    let kind = crate::etw_ignore::detect_kind(&trimmed);
+    let mut db = state.db.lock().map_err(|e| e.to_string())?;
+    crate::etw_ignore::add(&mut db, &trimmed, kind, note.as_deref()).map_err(|e| {
+        let msg = e.to_string();
+        if msg.contains("UNIQUE constraint failed") {
+            "This pattern is already in the ignore list.".into()
+        } else {
+            msg
+        }
+    })
+}
+
+#[tauri::command(rename_all = "camelCase")]
+pub async fn add_etw_ignored(
+    state: State<'_, AppState>,
+    pattern: String,
+    note: Option<String>,
+) -> Result<(), String> {
+    let st = state.inner().clone();
+    tauri::async_runtime::spawn_blocking(move || add_etw_ignored_inner(&st, pattern, note))
+        .await
+        .map_err(|e| e.to_string())?
+}
+
+fn remove_etw_ignored_inner(state: &AppState, id: i64) -> Result<(), String> {
+    let mut db = state.db.lock().map_err(|e| e.to_string())?;
+    crate::etw_ignore::remove(&mut db, id).map_err(|e| e.to_string())
+}
+
+#[tauri::command(rename_all = "camelCase")]
+pub async fn remove_etw_ignored(state: State<'_, AppState>, id: i64) -> Result<(), String> {
+    let st = state.inner().clone();
+    tauri::async_runtime::spawn_blocking(move || remove_etw_ignored_inner(&st, id))
+        .await
+        .map_err(|e| e.to_string())?
+}
+
 #[tauri::command(rename_all = "camelCase")]
 pub fn set_allowlist_entry(
     state: State<AppState>,

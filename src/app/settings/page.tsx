@@ -23,6 +23,7 @@ import {
   SlidersHorizontal,
   RadioTower,
   ScrollText,
+  Trash2,
   Volume2,
   Wrench,
   X,
@@ -30,6 +31,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import {
   useCallback,
+  useDeferredValue,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -71,6 +73,7 @@ import { playCameraOpened, playIssueDetected } from "@/lib/sound/issueSound";
 import type {
   AbuseChSourceStatus,
   AppSettings,
+  EtwIgnoreEntry,
   IpFeedStatus,
 } from "@/lib/types";
 
@@ -304,6 +307,12 @@ export default function SettingsPage() {
   const [abuseChFeeds, setAbuseChFeeds] = useState<AbuseChSourceStatus[]>([]);
   const [abuseChBusy, setAbuseChBusy] = useState(false);
 
+  const [etwIgnoreList, setEtwIgnoreList] = useState<EtwIgnoreEntry[]>([]);
+  const deferredEtwIgnoreList = useDeferredValue(etwIgnoreList);
+  const [etwIgnorePattern, setEtwIgnorePattern] = useState("");
+  const [etwIgnoreNote, setEtwIgnoreNote] = useState("");
+  const [etwIgnoreBusy, setEtwIgnoreBusy] = useState(false);
+
   const [autostart, setAutostart] = useState<boolean | null>(null);
   const [autostartUnavailable, setAutostartUnavailable] = useState(
     () => !isTauri(),
@@ -467,6 +476,67 @@ export default function SettingsPage() {
       showToast(e instanceof Error ? e.message : String(e), "error");
     } finally {
       setAbuseChBusy(false);
+    }
+  };
+
+  const loadEtwIgnoreList = useCallback(async () => {
+    if (!isTauri()) return;
+    try {
+      const rows = await invoke<EtwIgnoreEntry[]>("list_etw_ignored");
+      setEtwIgnoreList(rows);
+    } catch (e) {
+      showToast(e instanceof Error ? e.message : String(e), "error");
+    }
+  }, [showToast]);
+
+  useEffect(() => {
+    if (activeTab !== "detection" || !isTauri()) return;
+    void Promise.resolve().then(() => loadEtwIgnoreList());
+  }, [activeTab, loadEtwIgnoreList]);
+
+  const addEtwIgnoreEntry = async () => {
+    if (!isTauri()) return;
+    const pattern = etwIgnorePattern.trim();
+    if (!pattern) {
+      showToast(t("settings.detection.etwIgnoreList.toastEmpty"), "error");
+      return;
+    }
+    const patternLc = pattern.toLowerCase();
+    if (
+      etwIgnoreList.some((r) => r.pattern.trim().toLowerCase() === patternLc)
+    ) {
+      showToast(t("settings.detection.etwIgnoreList.toastDuplicate"), "error");
+      return;
+    }
+    setEtwIgnoreBusy(true);
+    try {
+      const noteTrim = etwIgnoreNote.trim();
+      await invoke("add_etw_ignored", {
+        pattern,
+        note: noteTrim ? noteTrim : null,
+      });
+      setEtwIgnorePattern("");
+      setEtwIgnoreNote("");
+      await loadEtwIgnoreList();
+      showToast(t("settings.detection.etwIgnoreList.toastAdded"), "success");
+    } catch (e) {
+      showToast(e instanceof Error ? e.message : String(e), "error");
+    } finally {
+      setEtwIgnoreBusy(false);
+    }
+  };
+
+  const removeEtwIgnoreEntry = async (id: number) => {
+    if (!isTauri()) return;
+    setEtwIgnoreBusy(true);
+    try {
+      await invoke("remove_etw_ignored", { id });
+      await loadEtwIgnoreList();
+      showToast(t("settings.detection.etwIgnoreList.toastRemoved"), "success");
+    } catch (e) {
+      showToast(e instanceof Error ? e.message : String(e), "error");
+    } finally {
+      setEtwIgnoreBusy(false);
     }
   };
 
@@ -1384,6 +1454,100 @@ export default function SettingsPage() {
           label={t("settings.detection.threadInjection.title")}
           description={t("settings.detection.threadInjection.description")}
         />
+      </SettingSection>
+
+      <SettingSection
+        icon={Radar}
+        title={t("settings.detection.etwIgnoreList.title")}
+        description={t("settings.detection.etwIgnoreList.description")}
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:flex-wrap lg:items-end">
+          <label className="min-w-0 flex-1 space-y-1">
+            <span className="sr-only">
+              {t("settings.detection.etwIgnoreList.patternPlaceholder")}
+            </span>
+            <input
+              type="text"
+              value={etwIgnorePattern}
+              onChange={(e) => setEtwIgnorePattern(e.target.value)}
+              placeholder={t(
+                "settings.detection.etwIgnoreList.patternPlaceholder",
+              )}
+              autoComplete="off"
+              disabled={etwIgnoreBusy || !isTauri()}
+              className="w-full rounded-lg border border-(--border) bg-(--background)/80 px-3 py-2 text-sm transition-colors duration-200 focus:border-(--accent) focus:outline-none disabled:opacity-60"
+            />
+          </label>
+          <label className="min-w-0 flex-1 space-y-1 lg:max-w-xs">
+            <span className="sr-only">
+              {t("settings.detection.etwIgnoreList.notePlaceholder")}
+            </span>
+            <input
+              type="text"
+              value={etwIgnoreNote}
+              onChange={(e) => setEtwIgnoreNote(e.target.value)}
+              placeholder={t("settings.detection.etwIgnoreList.notePlaceholder")}
+              autoComplete="off"
+              disabled={etwIgnoreBusy || !isTauri()}
+              className="w-full rounded-lg border border-(--border) bg-(--background)/80 px-3 py-2 text-sm transition-colors duration-200 focus:border-(--accent) focus:outline-none disabled:opacity-60"
+            />
+          </label>
+          <motion.button
+            type="button"
+            disabled={etwIgnoreBusy || !isTauri()}
+            onClick={() => void addEtwIgnoreEntry()}
+            whileTap={{ scale: 0.98 }}
+            className="shrink-0 rounded-lg bg-(--accent) px-4 py-2 text-sm font-medium text-white transition-opacity duration-150 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {t("settings.detection.etwIgnoreList.add")}
+          </motion.button>
+        </div>
+
+        {deferredEtwIgnoreList.length === 0 ? (
+          <p className="mt-4 text-sm text-(--muted)">
+            {t("settings.detection.etwIgnoreList.empty")}
+          </p>
+        ) : (
+          <ul className="mt-4 divide-y divide-(--border) rounded-lg border border-(--border) bg-(--surface-2)/35">
+            {deferredEtwIgnoreList.map((row) => (
+              <li
+                key={row.id}
+                className="flex flex-wrap items-start gap-3 px-3 py-3 sm:items-center sm:justify-between"
+              >
+                <div className="min-w-0 flex-1 space-y-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="font-mono text-sm text-(--foreground) break-all">
+                      {row.pattern}
+                    </span>
+                    <span
+                      className={`rounded border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
+                        row.kind === "path"
+                          ? "border-(--accent-2)/35 bg-(--accent-2)/10 text-(--accent-2)"
+                          : "border-(--border) bg-(--surface-2)/50 text-(--muted)"
+                      }`}
+                    >
+                      {row.kind === "path"
+                        ? t("settings.detection.etwIgnoreList.kind.path")
+                        : t("settings.detection.etwIgnoreList.kind.basename")}
+                    </span>
+                  </div>
+                  {row.note ? (
+                    <p className="text-xs text-(--muted)">{row.note}</p>
+                  ) : null}
+                </div>
+                <button
+                  type="button"
+                  aria-label={t("settings.detection.etwIgnoreList.removeAria")}
+                  disabled={etwIgnoreBusy || !isTauri()}
+                  onClick={() => void removeEtwIgnoreEntry(row.id)}
+                  className="shrink-0 rounded-lg border border-(--border) p-2 text-(--muted) transition-colors duration-150 hover:border-(--severity-high)/45 hover:bg-(--severity-high)/10 hover:text-(--severity-high) disabled:opacity-50"
+                >
+                  <Trash2 className="size-4" aria-hidden />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </SettingSection>
 
       <SettingSection

@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-list-etw-ignored",
+      "description": "List Process ETW ignore entries",
+      "commands": {
+        "allow": ["list_etw_ignored"],
+        "deny": []
+      }
+    }
+  ]
+}

@@ -22,6 +22,7 @@ mod diagnostics;
 mod etw_cleanup;
 #[cfg(windows)]
 mod etw_dns;
+mod etw_ignore;
 #[cfg(windows)]
 mod etw_win;
 #[cfg(windows)]
@@ -230,6 +231,9 @@ pub fn run() {
             commands::get_scan_history,
             commands::list_network_connections,
             commands::list_allowlist,
+            commands::list_etw_ignored,
+            commands::add_etw_ignored,
+            commands::remove_etw_ignored,
             commands::set_allowlist_entry,
             commands::remove_allowlist_entry,
             commands::set_allowlist_trusted,
@@ -338,7 +342,7 @@ pub fn run() {
                 #[cfg(windows)]
                 {
                     crate::etw_win::set_process_etw_enabled(
-                        crate::settings::read_process_etw_enabled(&db_guard).unwrap_or(true),
+                        crate::settings::read_process_etw_enabled(&db_guard).unwrap_or(false),
                     );
                     crate::etw_win32k::set_win32k_etw_enabled(
                         crate::settings::read_win32k_etw_enabled(&db_guard).unwrap_or(true),
@@ -352,6 +356,13 @@ pub fn run() {
                     crate::scheduler::set_periodic_scan_enabled(
                         crate::settings::read_periodic_scan_enabled(&db_guard).unwrap_or(true),
                     );
+                }
+            }
+
+            #[cfg(windows)]
+            {
+                if let Ok(db_guard) = db.lock() {
+                    let _ = crate::etw_ignore::reload_from_db(&db_guard);
                 }
             }
 

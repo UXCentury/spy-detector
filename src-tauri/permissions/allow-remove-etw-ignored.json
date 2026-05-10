@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-remove-etw-ignored",
+      "description": "Remove Process ETW ignore entry",
+      "commands": {
+        "allow": ["remove_etw_ignored"],
+        "deny": []
+      }
+    }
+  ]
+}

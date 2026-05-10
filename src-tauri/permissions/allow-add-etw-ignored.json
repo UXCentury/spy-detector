@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-add-etw-ignored",
+      "description": "Add Process ETW ignore entry",
+      "commands": {
+        "allow": ["add_etw_ignored"],
+        "deny": []
+      }
+    }
+  ]
+}

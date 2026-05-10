@@ -4,13 +4,16 @@
 use crate::allowlist;
 use crate::authenticode::{self, SignatureStatus};
 use crate::db;
+use crate::etw_ignore;
 use crate::event_log::{log as log_event, EventKind};
 use crate::ioc::IocIndex;
 use crate::live_activity::{ProcessLaunchedPayload, ThreadEventPayload};
 use crate::privilege;
 use crate::scan::Finding;
 use crate::score;
-use crate::thread_injection::{Severity, ThreadEvent, ThreadInjectionFilter};
+use crate::thread_injection::{
+    Severity, ThreadBurstUserOutcome, ThreadEvent, ThreadInjectionFilter,
+};
 use chrono::Utc;
 use ferrisetw::native::EvntraceNativeError;
 use ferrisetw::parser::Parser;
@@ -93,7 +96,7 @@ static THREAD_INJECTION_FILTER: Lazy<Mutex<ThreadInjectionFilter>> =
 
 static ETW_PROCESS_ACTIVE: AtomicBool = AtomicBool::new(false);
 
-static PROCESS_ETW_ENABLED: AtomicBool = AtomicBool::new(true);
+static PROCESS_ETW_ENABLED: AtomicBool = AtomicBool::new(false);
 
 pub fn set_process_etw_enabled(enabled: bool) {
     PROCESS_ETW_ENABLED.store(enabled, Ordering::Relaxed);
@@ -345,6 +348,9 @@ fn emit_process_launch_and_persist(
     ppid: u32,
 ) {
     let exe_pb = kernel_path_to_os_path(image_name);
+    if etw_ignore::is_ignored(&exe_pb.to_string_lossy()) {
+        return;
+    }
     let proc_name = exe_pb
         .file_name()
         .and_then(|s| s.to_str())
@@ -424,57 +430,24 @@ fn handle_thread_start(
         }
     }
 
-    if note_thread_burst(source_pid) {
-        let (src_name, src_path) = lookup_pid_exe(source_pid);
-        let ts = Utc::now().to_rfc3339();
-        let payload = ThreadEventPayload {
-            ts: ts.clone(),
-            kind: "thread_burst".into(),
-            source_pid,
-            source_name: src_name.clone(),
-            source_path: src_path.clone(),
-            target_pid: source_pid,
-            target_name: src_name.clone(),
-            target_path: src_path.clone(),
-            suspicious: true,
-            severity: "warn".into(),
-        };
-        let _ = app.emit("thread_event", &payload);
-        if let Ok(g) = db.lock() {
-            let _ = db::insert_thread_event_row(
-                &g,
-                &ts,
-                "thread_burst",
-                source_pid,
-                &src_name,
-                &src_path,
-                source_pid,
-                &src_name,
-                &src_path,
-                true,
-            );
-        }
-        log_event(
-            EventKind::ThreadBurst,
-            "warn",
-            Some(source_pid),
-            Some(src_name.clone()),
-            Some(src_path.clone()),
-            None,
-            format!("Thread burst heuristic (PID {source_pid})"),
-        );
+    let (src_name, src_path) = lookup_pid_exe(source_pid);
+    let (tgt_name, tgt_path) = lookup_pid_exe(owner_pid);
+    if etw_ignore::is_ignored(&src_path)
+        || etw_ignore::is_ignored(&tgt_path)
+        || etw_ignore::is_ignored(&src_name)
+        || etw_ignore::is_ignored(&tgt_name)
+    {
+        return;
     }
 
     if source_pid == owner_pid {
+        if crate::diagnostics::is_enabled() {
+            crate::diagnostics::log(&format!(
+                "[etw:thread_start] drop in-process thread_start owner_pid={owner_pid}"
+            ));
+        }
         return;
     }
-
-    if !crate::thread_injection::is_scanner_enabled() {
-        return;
-    }
-
-    let (src_name, src_path) = lookup_pid_exe(source_pid);
-    let (tgt_name, tgt_path) = lookup_pid_exe(owner_pid);
 
     let candidate = ThreadEvent {
         source_pid,
@@ -484,19 +457,119 @@ fn handle_thread_start(
         target_name: tgt_name.clone(),
         target_path: tgt_path.clone(),
     };
-    let severity = {
-        let Ok(mut sys) = SYS_FOR_LOOKUP.lock() else {
-            return;
-        };
-        sys.refresh_processes(
-            ProcessesToUpdate::Some(&[Pid::from_u32(source_pid), Pid::from_u32(owner_pid)]),
-            true,
-        );
-        let Ok(mut filter) = THREAD_INJECTION_FILTER.lock() else {
-            return;
-        };
-        filter.should_alert(&candidate, &sys)
+
+    let Ok(mut sys) = SYS_FOR_LOOKUP.lock() else {
+        return;
     };
+    sys.refresh_processes(
+        ProcessesToUpdate::Some(&[Pid::from_u32(source_pid), Pid::from_u32(owner_pid)]),
+        true,
+    );
+    let Ok(mut filter) = THREAD_INJECTION_FILTER.lock() else {
+        return;
+    };
+
+    if crate::thread_injection::is_self_exe(&candidate.source_path, &candidate.source_name)
+        || crate::thread_injection::is_self_exe(&candidate.target_path, &candidate.target_name)
+    {
+        return;
+    }
+
+    if filter.drops_signed_same_basename_same_publisher(&candidate) {
+        return;
+    }
+
+    if note_thread_burst(source_pid) {
+        let burst_outcome = filter.evaluate_thread_burst_alert(&candidate, &sys);
+
+        let burst_msg =
+            format!("Thread burst heuristic (source PID {source_pid} → owner PID {owner_pid})");
+        match burst_outcome {
+            ThreadBurstUserOutcome::ScannerDisabled => {}
+            ThreadBurstUserOutcome::DroppedSelf => {}
+            ThreadBurstUserOutcome::SuppressedKernelIssued => {}
+            ThreadBurstUserOutcome::SuppressedScmSignedService => {}
+            ThreadBurstUserOutcome::SuppressedSameImage => {
+                log_event(
+                    EventKind::ThreadBurst,
+                    "info",
+                    Some(owner_pid),
+                    Some(tgt_name.clone()),
+                    Some(tgt_path.clone()),
+                    Some(serde_json::json!({
+                        "sourcePid": source_pid,
+                        "sourcePath": src_path.clone(),
+                        "suppressReason": "same-image",
+                    })),
+                    burst_msg.clone(),
+                );
+            }
+            ThreadBurstUserOutcome::SuppressedSamePublisher => {
+                log_event(
+                    EventKind::ThreadBurst,
+                    "info",
+                    Some(owner_pid),
+                    Some(tgt_name.clone()),
+                    Some(tgt_path.clone()),
+                    Some(serde_json::json!({
+                        "sourcePid": source_pid,
+                        "sourcePath": src_path.clone(),
+                        "suppressReason": "same-publisher",
+                    })),
+                    burst_msg.clone(),
+                );
+            }
+            ThreadBurstUserOutcome::RateLimited => {}
+            ThreadBurstUserOutcome::AlertWarn => {
+                let ts = Utc::now().to_rfc3339();
+                let payload = ThreadEventPayload {
+                    ts: ts.clone(),
+                    kind: "thread_burst".into(),
+                    source_pid,
+                    source_name: src_name.clone(),
+                    source_path: src_path.clone(),
+                    target_pid: owner_pid,
+                    target_name: tgt_name.clone(),
+                    target_path: tgt_path.clone(),
+                    suspicious: true,
+                    severity: "warn".into(),
+                };
+                let _ = app.emit("thread_event", &payload);
+                if let Ok(g) = db.lock() {
+                    let _ = db::insert_thread_event_row(
+                        &g,
+                        &ts,
+                        "thread_burst",
+                        source_pid,
+                        &src_name,
+                        &src_path,
+                        owner_pid,
+                        &tgt_name,
+                        &tgt_path,
+                        true,
+                    );
+                }
+                log_event(
+                    EventKind::ThreadBurst,
+                    "warn",
+                    Some(owner_pid),
+                    Some(tgt_name.clone()),
+                    Some(tgt_path.clone()),
+                    Some(serde_json::json!({
+                        "sourcePid": source_pid,
+                        "sourcePath": src_path.clone(),
+                    })),
+                    burst_msg,
+                );
+            }
+        }
+    }
+
+    if !crate::thread_injection::is_scanner_enabled() {
+        return;
+    }
+
+    let severity = filter.should_alert(&candidate, &sys);
     let Some(severity) = severity else {
         return;
     };
@@ -667,6 +740,10 @@ fn run_etw_loop(
                     if image_name.is_empty() {
                         return;
                     }
+                    let img_os = kernel_path_to_os_path(&image_name);
+                    if etw_ignore::is_ignored(&img_os.to_string_lossy()) {
+                        return;
+                    }
                     record_image_load(pid, &image_name);
                     return;
                 }
@@ -689,6 +766,9 @@ fn run_etw_loop(
                             .and_then(|s| s.to_str())
                             .unwrap_or("")
                             .to_string();
+                    }
+                    if etw_ignore::is_ignored(&path_str) || etw_ignore::is_ignored(&proc_name) {
+                        return;
                     }
                     let image_opt = (!path_str.is_empty()).then_some(path_str);
                     log_event(
@@ -716,6 +796,11 @@ fn run_etw_loop(
                 .or_else(|_| parser.try_parse::<String>("ImageFileName"))
                 .unwrap_or_default();
             if image_name.is_empty() {
+                return;
+            }
+
+            let exe_pb_ignore = kernel_path_to_os_path(&image_name);
+            if etw_ignore::is_ignored(&exe_pb_ignore.to_string_lossy()) {
                 return;
             }
 

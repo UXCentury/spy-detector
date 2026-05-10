@@ -1,6 +1,7 @@
 "use client";
 
 import { invoke } from "@tauri-apps/api/core";
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import {
   Activity,
@@ -115,7 +116,7 @@ function DetectionComponentRow({
   restartingLabel,
 }: {
   icon: LucideIcon;
-  title: string;
+  title: ReactNode;
   description: string;
   subtext?: string | null;
   hint?: string | null;
@@ -194,6 +195,7 @@ export function OverviewDashboard() {
   const [scanCompletedBadge, setScanCompletedBadge] = useState<string | null>(
     null,
   );
+  const [processEtwConfirmOpen, setProcessEtwConfirmOpen] = useState(false);
 
   const refetchFindingsAndHistory = useCallback(async () => {
     try {
@@ -327,7 +329,7 @@ export function OverviewDashboard() {
     [t],
   );
 
-  const processEtwEnabled = settings?.processEtwEnabled ?? true;
+  const processEtwEnabled = settings?.processEtwEnabled ?? false;
   const win32kEtwEnabled = settings?.win32kEtwEnabled ?? true;
   const dnsEtwEnabled = settings?.dnsEtwEnabled ?? true;
   const cameraMonitorEnabled = settings?.cameraMonitorEnabled ?? true;
@@ -549,6 +551,7 @@ export function OverviewDashboard() {
   }
 
   return (
+    <>
     <div className="space-y-8">
       <h1 className="sr-only">{t("overview.title")}</h1>
       <OverviewHero
@@ -588,7 +591,14 @@ export function OverviewDashboard() {
         <div className="divide-y divide-(--border)">
           <DetectionComponentRow
             icon={Activity}
-            title={t("overview.components.processEtw.name")}
+            title={
+              <span className="inline-flex flex-wrap items-center gap-2">
+                <span>{t("overview.components.processEtw.name")}</span>
+                <span className="rounded-md bg-(--surface-2) px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-(--muted)">
+                  {t("overview.components.processEtw.beta")}
+                </span>
+              </span>
+            }
             description={t("overview.components.processEtw.description")}
             hint={processEtwHint}
             status={processEtwHealth}
@@ -598,7 +608,13 @@ export function OverviewDashboard() {
                 compact
                 checked={processEtwEnabled}
                 ariaLabel={t("overview.components.processEtw.toggleAria")}
-                onChange={(v) => void persistSettingsPatch({ processEtwEnabled: v })}
+                onChange={(v) => {
+                  if (v && !processEtwEnabled) {
+                    setProcessEtwConfirmOpen(true);
+                    return;
+                  }
+                  void persistSettingsPatch({ processEtwEnabled: v });
+                }}
               />
             }
             showRestart={showProcessEtwRestart}
@@ -871,5 +887,66 @@ export function OverviewDashboard() {
         </div>
       </div>
     </div>
+
+    <AnimatePresence>
+      {processEtwConfirmOpen ? (
+        <motion.div
+          className="fixed inset-0 z-55 flex items-center justify-center bg-black/45 p-4"
+          role="presentation"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setProcessEtwConfirmOpen(false)}
+          onKeyDown={(e) =>
+            e.key === "Escape" && setProcessEtwConfirmOpen(false)
+          }
+        >
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="process-etw-beta-title"
+            className="w-full max-w-md rounded-xl border border-(--border) bg-(--surface) p-5 shadow-xl"
+            initial={{ scale: 0.98, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.98, opacity: 0 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2
+              id="process-etw-beta-title"
+              className="text-base font-semibold text-(--foreground)"
+            >
+              {t("overview.processEtwConfirm.title")}
+            </h2>
+            <p className="mt-2 text-sm text-(--muted)">
+              {t("overview.processEtwConfirm.bodyBefore")}
+              <strong className="font-medium text-(--foreground)">
+                {t("overview.processEtwConfirm.bodyBold")}
+              </strong>
+              {t("overview.processEtwConfirm.bodyAfter")}
+            </p>
+            <div className="mt-5 flex flex-wrap justify-end gap-2 border-t border-(--border) pt-4">
+              <button
+                type="button"
+                onClick={() => setProcessEtwConfirmOpen(false)}
+                className="rounded-lg border border-(--border) px-4 py-2 text-sm font-medium transition-colors duration-200 hover:bg-(--surface-2)"
+              >
+                {t("overview.processEtwConfirm.cancel")}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setProcessEtwConfirmOpen(false);
+                  void persistSettingsPatch({ processEtwEnabled: true });
+                }}
+                className="rounded-lg bg-(--accent) px-4 py-2 text-sm font-medium text-white transition-opacity duration-200 hover:opacity-90"
+              >
+                {t("overview.processEtwConfirm.confirm")}
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      ) : null}
+    </AnimatePresence>
+    </>
   );
 }

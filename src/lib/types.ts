@@ -23,6 +23,14 @@ export type AllowlistEntry = {
   reason: string | null;
 };
 
+export type EtwIgnoreEntry = {
+  id: number;
+  pattern: string;
+  kind: "basename" | "path";
+  note: string | null;
+  createdAt: number;
+};
+
 export type AppSettings = {
   warnThreshold: number;
   alertThreshold: number;

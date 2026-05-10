@@ -73,6 +73,14 @@ export const ENGLISH: Record<StringKey, string> = {
   "overview.components.processEtw.hintDegraded":
     "Kernel image-load events and some process metadata require administrator privileges.",
   "overview.components.processEtw.toggleAria": "Enable or disable Process ETW monitoring",
+  "overview.components.processEtw.beta": "BETA",
+  "overview.processEtwConfirm.title": "Enable Process ETW (Beta)",
+  "overview.processEtwConfirm.bodyBefore":
+    "Process ETW monitoring is currently in beta and may produce false-positive alerts for legitimate developer tools, browsers, and system services. You can manage exceptions in ",
+  "overview.processEtwConfirm.bodyBold": "Settings → Detection → Process ETW ignore list",
+  "overview.processEtwConfirm.bodyAfter": ". Enable anyway?",
+  "overview.processEtwConfirm.cancel": "Cancel",
+  "overview.processEtwConfirm.confirm": "Enable Beta Monitor",
   "overview.components.win32kEtw.name": "Win32k ETW",
   "overview.components.win32kEtw.description":
     "Detects keyboard hook installations and clipboard access patterns.",
@@ -615,6 +623,23 @@ export const ENGLISH: Record<StringKey, string> = {
   "settings.detection.threadInjection.title": "Thread injection scanner",
   "settings.detection.threadInjection.description":
     "Detect cross-process thread creation that may indicate code injection. Turn off to silence alerts on developer machines.",
+  "settings.detection.etwIgnoreList.title": "Process ETW ignore list",
+  "settings.detection.etwIgnoreList.description":
+    "Add executables to skip Process ETW monitoring (thread events, image loads). Useful for developer tools and apps known to produce false positives.",
+  "settings.detection.etwIgnoreList.patternPlaceholder":
+    "git.exe or C:\\Path\\to\\app.exe",
+  "settings.detection.etwIgnoreList.notePlaceholder": "Optional note",
+  "settings.detection.etwIgnoreList.add": "Add",
+  "settings.detection.etwIgnoreList.empty":
+    "No ignored entries yet. Add a basename or full path to suppress Process ETW alerts for it.",
+  "settings.detection.etwIgnoreList.kind.basename": "basename",
+  "settings.detection.etwIgnoreList.kind.path": "path",
+  "settings.detection.etwIgnoreList.removeAria": "Remove ignore entry",
+  "settings.detection.etwIgnoreList.toastAdded": "Ignore entry added",
+  "settings.detection.etwIgnoreList.toastRemoved": "Ignore entry removed",
+  "settings.detection.etwIgnoreList.toastDuplicate":
+    "That pattern is already in the ignore list.",
+  "settings.detection.etwIgnoreList.toastEmpty": "Enter a basename or path.",
   "settings.toast.detectionSaved": "Detection settings saved",
   "event.amsiDetection": "Suspicious script detected",
   "event.yaraMatch": "YARA rule match",
