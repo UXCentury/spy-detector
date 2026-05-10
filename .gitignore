@@ -73,8 +73,6 @@ desktop.ini
 /.temp/
 tmp-*/
 .scratch/
-/screenshoots/
-/screenshots/
 
 # Editor backups / swap / OS junk
 *.bak

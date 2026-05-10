@@ -2,6 +2,17 @@
   "name": "spy-detector",
   "version": "0.1.0",
   "private": true,
+  "description": "Windows desktop application that detects stalkerware, suspicious processes, malicious network activity, and unauthorized cross-process injection.",
+  "homepage": "https://github.com/UXCentury/spy-detector#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UXCentury/spy-detector.git"
+  },
+  "bugs": {
+    "url": "https://github.com/UXCentury/spy-detector/issues"
+  },
+  "license": "MIT",
+  "author": "UX Century LLC",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",

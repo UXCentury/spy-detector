@@ -1,9 +1,12 @@
 [package]
 name = "spy-detector"
 version = "0.1.0"
-description = "Windows surveillance-process detector"
-authors = ["Spy Detector"]
+description = "Windows desktop application that detects stalkerware, suspicious processes, malicious network activity, and unauthorized cross-process injection."
+authors = ["UX Century LLC"]
 edition = "2021"
+license = "MIT"
+repository = "https://github.com/UXCentury/spy-detector"
+homepage = "https://github.com/UXCentury/spy-detector"
 
 [lib]
 name = "spy_detector_lib"

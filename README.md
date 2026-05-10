@@ -6,6 +6,117 @@ A Windows desktop application that detects suspicious processes, network behavio
 
 Spy Detector is a **detection** tool. It does not block, quarantine, or remove processes automatically — the user reviews findings and chooses whether to act.
 
+## Screenshots
+
+Spy Detector ships as a dark-themed Windows desktop shell (Tauri + Next.js). Representative UI views:
+
+<table>
+<tr>
+<td align="center" valign="top" width="50%">
+
+![Overview dashboard](./screenshots/overview-dashboard.png)
+
+<sub>Overview with live stats, detection components, and monitoring status.</sub>
+
+</td>
+<td align="center" valign="top" width="50%">
+
+![Processes scan results](./screenshots/processes-scan-results.png)
+
+<sub>Scored process table with filters, search, and on-demand scanning.</sub>
+
+</td>
+</tr>
+<tr>
+<td align="center" valign="top">
+
+![Settings — General](./screenshots/settings-general.png)
+
+<sub>Settings → General: language, diagnostics, and run on startup.</sub>
+
+</td>
+<td align="center" valign="top">
+
+![Live activity](./screenshots/live-activity.png)
+
+<sub>Real-time process launches with classification filters.</sub>
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary><strong>More screenshots</strong></summary>
+
+<table>
+<tr>
+<td align="center" valign="top" width="50%">
+
+![Overview — scan insights](./screenshots/overview-scan-insights.png)
+
+<sub>Severity mix, scan history, and recent findings on Overview.</sub>
+
+</td>
+<td align="center" valign="top" width="50%">
+
+![Overview — detection components](./screenshots/overview-detection-components.png)
+
+<sub>Overview emphasizing detection toggles and summary metrics.</sub>
+
+</td>
+</tr>
+<tr>
+<td align="center" valign="top">
+
+![Network connections](./screenshots/network-connections.png)
+
+<sub>Established TCP peers with IOC correlation and beacon hints.</sub>
+
+</td>
+<td align="center" valign="top">
+
+![Event log](./screenshots/event-log.png)
+
+<sub>Filterable local event log across detectors and severities.</sub>
+
+</td>
+</tr>
+<tr>
+<td align="center" valign="top">
+
+![Services](./screenshots/services-management.png)
+
+<sub>Windows services with scores, status, start type, and controls.</sub>
+
+</td>
+<td align="center" valign="top">
+
+![Allowlist](./screenshots/allowlist.png)
+
+<sub>Trusted paths skipped by scanning and high-score ETW alerts.</sub>
+
+</td>
+</tr>
+<tr>
+<td align="center" valign="top">
+
+![Ignored processes](./screenshots/ignored-processes.png)
+
+<sub>Processes excluded from risk scoring and alerts.</sub>
+
+</td>
+<td align="center" valign="top">
+
+![Live activity — thread events](./screenshots/live-activity-thread-events.png)
+
+<sub>Live activity with remote-thread events and in-app alert cards.</sub>
+
+</td>
+</tr>
+</table>
+
+</details>
+
 ## Implemented features
 
 ### Detection engine
@@ -207,7 +318,7 @@ The MSI/NSIS installers land in `src-tauri/target/release/bundle/`.
 
 ## Releases
 
-Production releases are built by GitHub Actions and signed via [SignPath Foundation](https://signpath.org/foundation). Direct builds from this repository may trigger Windows SmartScreen warnings until reputation accumulates.
+Production releases are built by GitHub Actions and signed via [SignPath Foundation](https://signpath.org/). Direct builds from this repository may trigger Windows SmartScreen warnings until reputation accumulates.
 
 ## Publisher
 
@@ -226,5 +337,5 @@ Issues and pull requests welcome. Please ensure new detection signals include ra
 ## Acknowledgments
 
 - [AssoEchap stalkerware-indicators](https://github.com/AssoEchap/stalkerware-indicators) — primary IOC source.
-- [SignPath Foundation](https://signpath.org/foundation) — code signing for OSS.
+- [SignPath Foundation](https://signpath.org/) — code signing for OSS.
 - [Tauri](https://tauri.app/), [Next.js](https://nextjs.org/), [Rust](https://rust-lang.org/).

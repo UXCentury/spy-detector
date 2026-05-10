@@ -64,6 +64,8 @@ spy-detector/
 └── .github/workflows/        # Release automation (SignPath signing pipeline)
 ```
 
+README UI captures live under `./screenshots/` (see the **Screenshots** section in [README.md](./README.md)).
+
 ### Rust modules you will touch most often
 
 | Module | Role |
