@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-get-autostart-enabled",
+      "description": "Read whether run-on-boot autostart is enabled",
+      "commands": {
+        "allow": ["get_autostart_enabled"],
+        "deny": []
+      }
+    }
+  ]
+}

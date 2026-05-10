@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-get-dev-infra-meta",
+      "description": "Read developer infrastructure IOC catalog metadata",
+      "commands": {
+        "allow": ["get_dev_infra_meta"],
+        "deny": []
+      }
+    }
+  ]
+}

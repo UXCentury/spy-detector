@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-refresh-ip-feeds",
+      "description": "Download refreshed copies of IP blocklist feeds",
+      "commands": {
+        "allow": ["refresh_ip_feeds"],
+        "deny": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-open-devtools",
+      "description": "Open WebView DevTools when enabled for this build",
+      "commands": {
+        "allow": ["open_devtools"],
+        "deny": []
+      }
+    }
+  ]
+}

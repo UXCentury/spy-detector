@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-splash-complete",
+      "description": "Legacy alias for splash teardown (set_complete)",
+      "commands": {
+        "allow": ["set_complete"],
+        "deny": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-kill-process",
+      "description": "Terminate a process (Windows)",
+      "commands": {
+        "allow": ["kill_process"],
+        "deny": []
+      }
+    }
+  ]
+}

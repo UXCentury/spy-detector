@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-get-language",
+      "description": "Read persisted language preference",
+      "commands": {
+        "allow": ["get_language"],
+        "deny": []
+      }
+    }
+  ]
+}

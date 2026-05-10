@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-open-diagnostic-log",
+      "description": "Open rolling app.log via system handler",
+      "commands": {
+        "allow": ["open_diagnostic_log"],
+        "deny": []
+      }
+    }
+  ]
+}

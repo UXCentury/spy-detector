@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-list-network-connections",
+      "description": "List established TCP connections with IOC hints",
+      "commands": {
+        "allow": ["list_network_connections"],
+        "deny": []
+      }
+    }
+  ]
+}

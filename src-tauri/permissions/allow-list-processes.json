@@ -1,0 +1,15 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-list-processes",
+      "description": "List OS processes",
+      "commands": {
+        "allow": [
+          "list_processes"
+        ],
+        "deny": []
+      }
+    }
+  ]
+}

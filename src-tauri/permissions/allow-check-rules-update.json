@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-check-rules-update",
+      "description": "HEAD upstream IOC for updates",
+      "commands": {
+        "allow": ["check_rules_update"],
+        "deny": []
+      }
+    }
+  ]
+}

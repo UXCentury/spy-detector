@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-clear-thread-events",
+      "description": "Clear persisted thread event history",
+      "commands": {
+        "allow": ["clear_thread_events"],
+        "deny": []
+      }
+    }
+  ]
+}

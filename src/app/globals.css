@@ -1,0 +1,271 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0a0a0c;
+  --surface: #14141a;
+  --surface-2: #1c1c25;
+  --border: #2a2a36;
+  --border-bright: #3a3a4d;
+  --foreground: #e8e8ee;
+  --muted: #8a8a99;
+  --accent: #6366f1;
+  --accent-2: #06b6d4;
+  --severity-low: #10b981;
+  --severity-warn: #f59e0b;
+  --severity-high: #ef4444;
+  --sidebar: #0e0e12;
+  --glow-accent: rgba(99, 102, 241, 0.12);
+  --glow-cyan: rgba(6, 182, 212, 0.08);
+}
+
+/* Global scrollbars (WebView2/Chromium + Firefox track colors). */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-bright) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-bright);
+  border-radius: 5px;
+  transition: background 200ms;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+html,
+body {
+  background: var(--background);
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% -30%, var(--glow-accent), transparent),
+    radial-gradient(ellipse 80% 50% at 100% 0%, var(--glow-cyan), transparent);
+  background-attachment: fixed;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+@keyframes progress-indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.92);
+  }
+}
+
+/* sticky-table */
+.sticky-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  position: relative;
+}
+
+.sticky-table-wrap.sticky-table-wrap-flush {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+.sticky-table-wrap.has-overflow-right::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 24px;
+  background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.35));
+  pointer-events: none;
+  z-index: 3;
+}
+
+.sticky-table-wrap.has-overflow-left::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 24px;
+  background: linear-gradient(to left, transparent, rgba(0, 0, 0, 0.35));
+  pointer-events: none;
+  z-index: 3;
+}
+
+.sticky-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: auto;
+  font-size: 13px;
+}
+
+.sticky-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.sticky-table tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  background: var(--surface);
+  color: var(--foreground);
+  white-space: nowrap;
+}
+
+.sticky-table tbody tr:hover td {
+  background: var(--surface-2);
+}
+
+.sticky-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.sticky-table .col-sticky-left {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+.sticky-table .col-sticky-left-2 {
+  position: sticky;
+  z-index: 1;
+}
+
+.sticky-table .col-sticky-left-3 {
+  position: sticky;
+  z-index: 1;
+}
+
+.sticky-table .col-sticky-right {
+  position: sticky;
+  right: 0;
+  z-index: 1;
+}
+
+.sticky-table tbody td.col-sticky-left,
+.sticky-table tbody td.col-sticky-left-2,
+.sticky-table tbody td.col-sticky-left-3,
+.sticky-table tbody td.col-sticky-right {
+  background: var(--surface);
+}
+
+.sticky-table thead th.col-sticky-left,
+.sticky-table thead th.col-sticky-left-2,
+.sticky-table thead th.col-sticky-left-3,
+.sticky-table thead th.col-sticky-right {
+  background: var(--surface-2);
+}
+
+.sticky-table tbody tr:hover td.col-sticky-left,
+.sticky-table tbody tr:hover td.col-sticky-left-2,
+.sticky-table tbody tr:hover td.col-sticky-left-3,
+.sticky-table tbody tr:hover td.col-sticky-right {
+  background: var(--surface-2);
+}
+
+.sticky-table thead th.col-sticky-left,
+.sticky-table thead th.col-sticky-left-2,
+.sticky-table thead th.col-sticky-left-3,
+.sticky-table thead th.col-sticky-right {
+  z-index: 5;
+}
+
+.sticky-table thead th.col-sticky-left,
+.sticky-table thead th.col-sticky-left-2,
+.sticky-table thead th.col-sticky-left-3,
+.sticky-table tbody td.col-sticky-left,
+.sticky-table tbody td.col-sticky-left-2,
+.sticky-table tbody td.col-sticky-left-3 {
+  box-shadow: inset -1px 0 0 var(--border);
+}
+
+.sticky-table thead th.col-sticky-right,
+.sticky-table tbody td.col-sticky-right {
+  box-shadow: inset 1px 0 0 var(--border);
+}
+
+.sticky-table-wrap.has-overflow-left .sticky-table thead th.col-sticky-left,
+.sticky-table-wrap.has-overflow-left .sticky-table thead th.col-sticky-left-2,
+.sticky-table-wrap.has-overflow-left .sticky-table thead th.col-sticky-left-3,
+.sticky-table-wrap.has-overflow-left .sticky-table tbody td.col-sticky-left,
+.sticky-table-wrap.has-overflow-left .sticky-table tbody td.col-sticky-left-2,
+.sticky-table-wrap.has-overflow-left .sticky-table tbody td.col-sticky-left-3 {
+  box-shadow:
+    inset -1px 0 0 var(--border),
+    2px 0 4px -2px rgba(0, 0, 0, 0.5);
+}
+
+.sticky-table-wrap.has-overflow-right .sticky-table thead th.col-sticky-right,
+.sticky-table-wrap.has-overflow-right .sticky-table tbody td.col-sticky-right {
+  box-shadow:
+    inset 1px 0 0 var(--border),
+    -2px 0 4px -2px rgba(0, 0, 0, 0.5);
+}
+
+.sticky-table .cell-truncate {
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sticky-table .cell-truncate > span {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+

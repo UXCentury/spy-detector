@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-list-ioc-entries",
+      "description": "List IOC index entries for Rules UI",
+      "commands": {
+        "allow": ["list_ioc_entries"],
+        "deny": []
+      }
+    }
+  ]
+}

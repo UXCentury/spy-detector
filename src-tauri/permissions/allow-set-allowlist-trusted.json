@@ -1,0 +1,15 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-set-allowlist-trusted",
+      "description": "Trust or untrust path",
+      "commands": {
+        "allow": [
+          "set_allowlist_trusted"
+        ],
+        "deny": []
+      }
+    }
+  ]
+}

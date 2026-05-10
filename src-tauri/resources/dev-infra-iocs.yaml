@@ -1,0 +1,67 @@
+# Curated list of "trusted-by-default" services frequently abused for malware staging.
+# Each entry is a host/path pattern; matching uses suffix-on-host + substring-on-path.
+snapshot_date: "2026-05-09"
+github_repos:
+  # Format: "<owner>/<repo>" or just "<owner>" to flag any repo from that owner
+  malicious:
+    - "placeholder-bad-org-1"
+    - "placeholder-bad-org-2/placeholder-bad-repo"
+  # Categories of offensive tooling (detection != malicious, but worth flagging)
+  offensive_tooling:
+    - "BishopFox/sliver"
+    - "MythicAgents"
+    - "HavocFramework/Havoc"
+    - "ParrotSec/PoshC2"
+    - "EmpireProject/Empire"
+    - "shellab/villain"
+    - "rapid7/metasploit-framework"
+    - "MITRE/caldera"
+    - "Nyamort/PEzor"
+    - "lockedbyte/CVE-Exploits"
+paste_sites:
+  - "pastebin.com"
+  - "paste.ee"
+  - "hastebin.com"
+  - "rentry.co"
+  - "ghostbin.com"
+  - "0bin.net"
+  - "controlc.com"
+ipfs_gateways:
+  - "ipfs.io"
+  - "cloudflare-ipfs.com"
+  - "gateway.pinata.cloud"
+  - "dweb.link"
+  - "nftstorage.link"
+discord_cdn:
+  - "cdn.discordapp.com/attachments/"
+  - "media.discordapp.net/attachments/"
+telegram_cdn:
+  - "t.me/+"
+  - "telegra.ph"
+url_shorteners:
+  - "bit.ly"
+  - "tinyurl.com"
+  - "is.gd"
+  - "shorturl.at"
+  - "rebrand.ly"
+  - "cutt.ly"
+file_share_abuse:
+  - "anonfiles.com"
+  - "mediafire.com"
+  - "mega.nz"
+  - "transfer.sh"
+  - "filebin.net"
+  - "wormhole.app"
+suspicious_paths:
+  # Substrings that, when seen in a URL path, raise score
+  - "/raw/"
+  - "/releases/download/"
+  - ".ps1"
+  - ".bat"
+  - ".hta"
+  - ".vbs"
+  - ".scr"
+  - ".lnk"
+  - ".jse"
+  - ".wsf"
+  - ".jar"

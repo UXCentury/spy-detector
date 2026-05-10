@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-close-browser-safely-cmd",
+      "description": "Close a browser process gracefully or forcibly before history edits",
+      "commands": {
+        "allow": ["close_browser_safely_cmd"],
+        "deny": []
+      }
+    }
+  ]
+}

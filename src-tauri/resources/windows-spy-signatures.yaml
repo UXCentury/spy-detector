@@ -1,0 +1,91 @@
+# Windows-focused stalkerware / monitoring tooling hints (v1).
+# Matched case-insensitively on process name and optional path substrings.
+version: 1
+signatures:
+  - label: Hoverwatch
+    process_names: [hoverwatch, hwmonitor, hoverwatchsvc]
+    path_substrings: ["Hoverwatch"]
+  - label: FlexiSpy
+    process_names: [flexispy, flexispy4, flexispy4svc]
+    path_substrings: ["FlexiSpy"]
+  - label: Refog / REFOG
+    process_names: [refog, refogsvc, rfagent, rfagentsrv]
+    path_substrings: ["Refog", "REFOG"]
+  - label: Spyrix
+    process_names: [spyrix, spyrix-free, spyrixsrv]
+    path_substrings: ["Spyrix"]
+  - label: Ardamax Keylogger
+    process_names: [akv2008, ardamax, ardamax-k]
+    path_substrings: ["Ardamax"]
+  - label: Spytector
+    process_names: [spytector, spytectorsrv]
+    path_substrings: ["Spytector"]
+  - label: ActivTrak
+    process_names: [activtrak, "activtrak agent", activtrakagent]
+    path_substrings: ["ActivTrak"]
+  - label: Veriato
+    process_names: [veriato, "veriato c", veriatosrv]
+    path_substrings: ["Veriato"]
+  - label: Teramind
+    process_names: [teramind, "teramind agent", tmagent]
+    path_substrings: ["Teramind"]
+  - label: Refog Personal Monitor
+    process_names: [personalmonitor, refogpm]
+    path_substrings: ["Personal Monitor", "Refog"]
+  - label: Spyrix Personal Monitor
+    process_names: [spyrixpm]
+    path_substrings: ["Spyrix"]
+  - label: NetVizor
+    process_names: [netvizor, nvsvc]
+    path_substrings: ["NetVizor"]
+  - label: Pearl Echo
+    process_names: [pecho, pearlecho]
+    path_substrings: ["Pearl Echo"]
+  - label: Power Spy
+    process_names: [powerspy, pwrspy]
+    path_substrings: ["Power Spy"]
+  - label: BlazingTools Perfect Keylogger
+    process_names: [pkcore, "perfect keylogger"]
+    path_substrings: ["Perfect Keylogger", "BlazingTools"]
+  - label: Elite Keylogger
+    process_names: [elitekeylogger, ekbd, ekbd32]
+    path_substrings: ["Elite Keylogger"]
+  - label: Family Cyber Alert
+    process_names: [famcyberalert, familycyberalert]
+    path_substrings: ["Family Cyber Alert"]
+  - label: NetBull
+    process_names: [netbull, netbullkl]
+    path_substrings: ["NetBull"]
+  - label: Phoenix Keylogger
+    process_names: [phoenixkl, "phoenix keylogger"]
+    path_substrings: ["Phoenix"]
+  - label: Realtime-Spy
+    process_names: [rtssvc, realtimespy]
+    path_substrings: ["Realtime-Spy", "RealtimeSpy"]
+  - label: SoftActivity Monitor
+    process_names: [samonitor, softactivity]
+    path_substrings: ["SoftActivity"]
+  - label: SpyAgent
+    process_names: [spyagent, spytech]
+    path_substrings: ["SpyAgent"]
+  - label: Stealth iBot
+    process_names: [stealthibot, ibot]
+    path_substrings: ["Stealth", "iBot"]
+  - label: WebWatcher
+    process_names: [webwatcher, wwsvc, webwatcherctl]
+    path_substrings: ["WebWatcher"]
+  - label: AnyDesk
+    process_names: [anydesk, anydesk.exe]
+    path_substrings: ["AnyDesk"]
+  - label: TeamViewer
+    process_names: [teamviewer, tv_w32, tv_x64]
+    path_substrings: ["TeamViewer"]
+  - label: ScreenConnect
+    process_names: [screenconnect.windowsclient, "screenconnect client"]
+    path_substrings: ["ScreenConnect"]
+  - label: Splashtop
+    process_names: [splashtop, strwinclt, "splashtop streamer"]
+    path_substrings: ["Splashtop"]
+  - label: RustDesk
+    process_names: [rustdesk]
+    path_substrings: ["RustDesk"]

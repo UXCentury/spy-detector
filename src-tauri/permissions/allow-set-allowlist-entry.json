@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-set-allowlist-entry",
+      "description": "Create or update allowlist entry with metadata",
+      "commands": {
+        "allow": ["set_allowlist_entry"],
+        "deny": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-yara-scan-path",
+      "description": "Run bundled YARA rules against a file path",
+      "commands": {
+        "allow": ["yara_scan_path"],
+        "deny": []
+      }
+    }
+  ]
+}

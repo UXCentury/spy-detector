@@ -1,0 +1,15 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-get-app-settings",
+      "description": "Read thresholds and disabled tokens",
+      "commands": {
+        "allow": [
+          "get_app_settings"
+        ],
+        "deny": []
+      }
+    }
+  ]
+}

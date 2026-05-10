@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-refresh-abusech",
+      "description": "Refresh abuse.ch ThreatFox and URLhaus snapshots",
+      "commands": {
+        "allow": ["refresh_abusech"],
+        "deny": []
+      }
+    }
+  ]
+}

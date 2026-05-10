@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-clear-process-launches",
+      "description": "Clear persisted process launch history",
+      "commands": {
+        "allow": ["clear_process_launches"],
+        "deny": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-file-sha256-hex",
+      "description": "Compute SHA-256 hex digest of a file path",
+      "commands": {
+        "allow": ["file_sha256_hex"],
+        "deny": []
+      }
+    }
+  ]
+}

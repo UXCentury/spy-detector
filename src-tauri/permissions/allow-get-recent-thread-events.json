@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-get-recent-thread-events",
+      "description": "Read recent suspicious thread event rows",
+      "commands": {
+        "allow": ["get_recent_thread_events"],
+        "deny": []
+      }
+    }
+  ]
+}

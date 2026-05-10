@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-list-event-log",
+      "description": "List consolidated detector event log rows",
+      "commands": {
+        "allow": ["list_event_log"],
+        "deny": []
+      }
+    }
+  ]
+}

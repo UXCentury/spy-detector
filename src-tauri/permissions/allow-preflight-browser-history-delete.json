@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-preflight-browser-history-delete",
+      "description": "Pre-flight check for browser history delete (running browsers)",
+      "commands": {
+        "allow": ["preflight_browser_history_delete"],
+        "deny": []
+      }
+    }
+  ]
+}

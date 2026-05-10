@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-list-abusech-sources",
+      "description": "List abuse.ch threat-intel feed status",
+      "commands": {
+        "allow": ["list_abusech_sources"],
+        "deny": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-set-ip-feed-enabled",
+      "description": "Enable or disable a bundled IP blocklist feed",
+      "commands": {
+        "allow": ["set_ip_feed_enabled"],
+        "deny": []
+      }
+    }
+  ]
+}

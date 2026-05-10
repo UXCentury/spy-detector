@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-set-complete",
+      "description": "Signal frontend/backend setup complete for splash teardown",
+      "commands": {
+        "allow": ["set_complete"],
+        "deny": []
+      }
+    }
+  ]
+}

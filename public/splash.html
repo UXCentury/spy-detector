@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" style="background:#0a0a0c">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Spy Detector</title>
+<style>
+:root{--background:#0A0A0C;--foreground:#F5F5F7;--muted:#B8B8C2;--accent:#4F8AF7}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;color:var(--foreground);font-family:system-ui,sans-serif;font-size:14px;overflow:hidden}
+body{
+  background:#0a0a0c url('/splash.jpg') center center / cover no-repeat;
+  position:relative;
+}
+body::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,10,12,.15) 0%,rgba(10,10,12,.45) 55%,rgba(10,10,12,.92) 100%);
+  pointer-events:none;
+}
+.dr{position:fixed;top:0;left:0;right:0;height:32px;-webkit-app-region:drag;z-index:2}
+.w{
+  position:absolute;left:0;right:0;bottom:0;
+  display:flex;flex-direction:column;align-items:center;
+  padding:0 20px 22px;z-index:1;
+  text-shadow:0 1px 12px rgba(0,0,0,.65);
+}
+h1{font-size:1.15rem;font-weight:600;letter-spacing:.04em}
+.sub{font-size:.72rem;color:var(--muted);margin-top:3px;letter-spacing:.02em}
+.p{
+  width:140px;height:2px;background:rgba(255,255,255,.10);
+  border-radius:2px;margin-top:14px;overflow:hidden;
+  box-shadow:0 0 0 1px rgba(0,0,0,.25);
+}
+#progress-fill{display:block;height:100%;width:4%;background:var(--accent);box-shadow:0 0 8px rgba(79,138,247,.7);transition:width .28s ease}
+#progress-label{margin-top:12px;font-size:.72rem;color:var(--muted);text-align:center;min-height:1.25em;letter-spacing:.02em}
+</style>
+</head>
+<body>
+<div class="dr"></div>
+<div class="w">
+<h1>spy-detector</h1>
+<div class="sub">by UXC LLC</div>
+<div class="p"><span id="progress-fill"></span></div>
+<div id="progress-label">Initializing detection engine…</div>
+</div>
+<script>
+(function () {
+  async function wire() {
+    var tauri = window.__TAURI__;
+    var listen = tauri && tauri.event && tauri.event.listen;
+    if (typeof listen !== 'function') return;
+    await listen('splash_progress', function (e) {
+      var p = e.payload || {};
+      var label = p.label != null ? String(p.label) : '';
+      var done = Number(p.done) || 0;
+      var total = Number(p.total) || 0;
+      var pct = total > 0 ? Math.round((done / total) * 100) : 0;
+      var bar = document.getElementById('progress-fill');
+      var txt = document.getElementById('progress-label');
+      if (bar) bar.style.width = pct + '%';
+      if (txt) txt.textContent = label + ' (' + done + '/' + total + ')';
+    });
+  }
+  wire().catch(function () {});
+})();
+</script>
+</body>
+</html>

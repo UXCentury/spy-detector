@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-submit-bug-report",
+      "description": "Save local bug report file",
+      "commands": {
+        "allow": ["submit_bug_report"],
+        "deny": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+# Enforce conventional-ish commit prefix.
+msg=$(cat "$1")
+if ! echo "$msg" | grep -qE '^(feat|fix|docs|chore|refactor|test|perf|build|ci|style|revert)(\(.+\))?: .+'; then
+  echo "[error] commit message must start with one of: feat|fix|docs|chore|refactor|test|perf|build|ci|style|revert"
+  echo "  example: feat(processes): add ignore filter chip"
+  exit 1
+fi

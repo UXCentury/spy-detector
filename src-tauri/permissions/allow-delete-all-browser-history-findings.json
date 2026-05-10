@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-delete-all-browser-history-findings",
+      "description": "Delete all flagged URLs from browser history databases",
+      "commands": {
+        "allow": ["delete_all_browser_history_findings"],
+        "deny": []
+      }
+    }
+  ]
+}

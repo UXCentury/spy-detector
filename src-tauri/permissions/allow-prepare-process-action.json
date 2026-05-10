@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-prepare-process-action",
+      "description": "Prepare kill/quarantine confirmation metadata",
+      "commands": {
+        "allow": ["prepare_process_action"],
+        "deny": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-clear-dns-cache",
+      "description": "Clear in-memory DNS ETW hostname cache",
+      "commands": {
+        "allow": ["clear_dns_cache"],
+        "deny": []
+      }
+    }
+  ]
+}

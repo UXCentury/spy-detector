@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-set-autostart-enabled",
+      "description": "Enable or disable run-on-boot autostart",
+      "commands": {
+        "allow": ["set_autostart_enabled"],
+        "deny": []
+      }
+    }
+  ]
+}

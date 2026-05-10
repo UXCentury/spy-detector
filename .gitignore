@@ -1,0 +1,102 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Next.js build
+/.next/
+/out/
+/build
+
+# Tauri build
+/src-tauri/target/
+/src-tauri/gen/schemas/
+
+# Rust
+**/target/
+**/*.rs.bk
+*.pdb
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Local secrets/env
+.env
+.env*.local
+
+# IDE / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Cursor (if any per-project state)
+.cursor/
+
+# Test/coverage
+/coverage
+*.lcov
+
+# Tauri local caches
+/src-tauri/.cargo/
+/src-tauri/Cargo.lock.bak
+
+# Build artifacts
+/dist/
+*.exe
+*.msi
+*.dmg
+*.AppImage
+*.deb
+*.rpm
+
+# tsbuildinfo
+*.tsbuildinfo
+
+# Bug report / runtime data (don't commit local user state)
+/src-tauri/resources/ioc-cache/
+
+# Generated icons preserved EXCEPT the source we vendored
+# (keep src-tauri/icons/ committed since they're build inputs)
+
+# Local scratch / workspaces
+/tmp-ws/
+/tmp/
+/temp/
+/.tmp/
+/.temp/
+tmp-*/
+.scratch/
+/screenshoots/
+/screenshots/
+
+# Editor backups / swap / OS junk
+*.bak
+*.swp
+*.swo
+*~
+*.orig
+*.rej
+
+# Local agent / planning files (not source of truth)
+/.claude/
+/.cursor-tasks/
+/agent-transcripts/
+/AGENTS.md.local
+
+# Tauri / Rust extras
+/src-tauri/WixTools/
+/src-tauri/.fingerprint/
+/src-tauri/.rustc_info.json
+
+# Misc
+.cache/
+*.pid
+*.seed
+*.pid.lock

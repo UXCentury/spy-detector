@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-clear-browser-history-findings",
+      "description": "Clear stored browser history findings",
+      "commands": {
+        "allow": ["clear_browser_history_findings"],
+        "deny": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-quit-app",
+      "description": "Exit the application process",
+      "commands": {
+        "allow": ["quit_app"],
+        "deny": []
+      }
+    }
+  ]
+}

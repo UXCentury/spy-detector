@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-get-dns-cache-stats",
+      "description": "Read DNS-Client ETW cache telemetry",
+      "commands": {
+        "allow": ["get_dns_cache_stats"],
+        "deny": []
+      }
+    }
+  ]
+}

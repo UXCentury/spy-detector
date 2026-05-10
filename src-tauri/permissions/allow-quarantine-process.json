@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-quarantine-process",
+      "description": "Move executable to quarantine and terminate",
+      "commands": {
+        "allow": ["quarantine_process"],
+        "deny": []
+      }
+    }
+  ]
+}

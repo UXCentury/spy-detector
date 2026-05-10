@@ -1,0 +1,72 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "Spy Detector",
+  "version": "0.1.0",
+  "identifier": "com.spydetector.app",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:3000",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../out"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "label": "main",
+        "title": "Spy Detector",
+        "backgroundColor": "#0A0A0C",
+        "width": 1200,
+        "height": 800,
+        "minWidth": 900,
+        "minHeight": 560,
+        "resizable": true,
+        "decorations": false,
+        "transparent": false,
+        "visible": false
+      },
+      {
+        "label": "splash",
+        "url": "/splash.html",
+        "title": "Spy Detector",
+        "backgroundColor": "#0A0A0C",
+        "width": 480,
+        "height": 320,
+        "decorations": false,
+        "transparent": false,
+        "resizable": false,
+        "alwaysOnTop": true,
+        "center": true,
+        "visible": true,
+        "skipTaskbar": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "publisher": "UXC LLC",
+    "targets": ["nsis", "msi"],
+    "resources": [],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "wix": {
+        "upgradeCode": "c9f7e4d2-8b1a-4f6e-9c3d-2e8a1f5b7d04",
+        "language": "en-US",
+        "template": "installer/main.wxs"
+      },
+      "nsis": {
+        "installMode": "currentUser",
+        "template": "installer/installer.nsi"
+      }
+    }
+  },
+  "plugins": {}
+}

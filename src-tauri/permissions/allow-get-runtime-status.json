@@ -1,0 +1,15 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-get-runtime-status",
+      "description": "Runtime privilege status",
+      "commands": {
+        "allow": [
+          "get_runtime_status"
+        ],
+        "deny": []
+      }
+    }
+  ]
+}

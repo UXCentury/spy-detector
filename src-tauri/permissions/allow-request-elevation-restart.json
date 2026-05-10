@@ -1,0 +1,15 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-request-elevation-restart",
+      "description": "Restart the app via UAC elevation (Windows ShellExecute runas)",
+      "commands": {
+        "allow": [
+          "request_elevation_restart"
+        ],
+        "deny": []
+      }
+    }
+  ]
+}

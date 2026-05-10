@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-clear-event-log",
+      "description": "Clear all rows from the consolidated event log",
+      "commands": {
+        "allow": ["clear_event_log"],
+        "deny": []
+      }
+    }
+  ]
+}

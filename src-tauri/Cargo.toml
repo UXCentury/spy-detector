@@ -1,0 +1,74 @@
+[package]
+name = "spy-detector"
+version = "0.1.0"
+description = "Windows surveillance-process detector"
+authors = ["Spy Detector"]
+edition = "2021"
+
+[lib]
+name = "spy_detector_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-notification = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_yaml = "0.9"
+sysinfo = "0.37"
+rusqlite = { version = "0.37", features = ["bundled"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+chrono = { version = "0.4", features = ["serde"] }
+dirs = "6"
+dns-lookup = "3"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"] }
+sha2 = "0.10"
+ipnet = "2"
+yara-x = "1.16"
+crossbeam-channel = "0.5"
+tauri-plugin-autostart = "2"
+tauri-plugin-opener = "2"
+roxmltree = "0.20"
+
+[target.'cfg(any(target_os = "windows", target_os = "linux"))'.dependencies]
+tauri-plugin-single-instance = "2"
+
+[target.'cfg(windows)'.dependencies]
+netstat2 = "0.11"
+ferrisetw = "1.2"
+winreg = "0.55"
+once_cell = "1"
+windows = { version = "0.61", features = [
+  "Win32_Foundation",
+  "Win32_Security",
+  "Win32_Security_WinTrust",
+  "Win32_Security_Cryptography",
+  "Win32_Security_Cryptography_Catalog",
+  "Win32_Security_Cryptography_Sip",
+  "Win32_System_Com",
+  "Win32_System_DataExchange",
+  "Win32_System_Threading",
+  "Win32_Media_MediaFoundation",
+  "Win32_UI_WindowsAndMessaging",
+  "Win32_UI_Shell",
+  "Win32_Graphics_Gdi",
+  "Win32_Storage_FileSystem",
+  "Win32_System_Antimalware",
+  "Win32_System_Services",
+] }
+windows-core = "0.61"
+windows-implement = "0.60"
+windows-service = "0.8"
+
+[dev-dependencies]
+tempfile = "3"
+pretty_assertions = "1"
+indoc = "2"
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+devtools = []

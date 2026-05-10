@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-get-scan-history",
+      "description": "Load persisted scan history aggregates",
+      "commands": {
+        "allow": ["get_scan_history"],
+        "deny": []
+      }
+    }
+  ]
+}

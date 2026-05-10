@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-accept-terms",
+      "description": "Record terms acceptance timestamp",
+      "commands": {
+        "allow": ["accept_terms"],
+        "deny": []
+      }
+    }
+  ]
+}

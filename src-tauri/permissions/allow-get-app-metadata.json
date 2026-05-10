@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-get-app-metadata",
+      "description": "Read app version and build metadata",
+      "commands": {
+        "allow": ["get_app_metadata"],
+        "deny": []
+      }
+    }
+  ]
+}

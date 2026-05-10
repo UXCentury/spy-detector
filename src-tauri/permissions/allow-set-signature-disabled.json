@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-set-signature-disabled",
+      "description": "Toggle disabled IOC signature tokens",
+      "commands": {
+        "allow": ["set_signature_disabled"],
+        "deny": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-get-recent-process-launches",
+      "description": "Read recent real-time process launch rows",
+      "commands": {
+        "allow": ["get_recent_process_launches"],
+        "deny": []
+      }
+    }
+  ]
+}

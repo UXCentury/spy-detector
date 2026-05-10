@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-refresh-ioc",
+      "description": "Download and refresh stalkerware IOC YAML",
+      "commands": {
+        "allow": ["refresh_ioc"],
+        "deny": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-get-scan-interval",
+      "description": "Read periodic full-scan interval (seconds)",
+      "commands": {
+        "allow": ["get_scan_interval"],
+        "deny": []
+      }
+    }
+  ]
+}

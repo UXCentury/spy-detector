@@ -1,0 +1,20 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-services-mgmt",
+      "description": "Enumerate and control Windows services",
+      "commands": {
+        "allow": [
+          "list_services",
+          "set_service_enabled",
+          "set_service_start_type",
+          "start_service_cmd",
+          "stop_service_cmd",
+          "set_service_note"
+        ],
+        "deny": []
+      }
+    }
+  ]
+}

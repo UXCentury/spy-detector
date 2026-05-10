@@ -1,0 +1,15 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-export-latest-scan-json",
+      "description": "Export JSON",
+      "commands": {
+        "allow": [
+          "export_latest_scan_json"
+        ],
+        "deny": []
+      }
+    }
+  ]
+}

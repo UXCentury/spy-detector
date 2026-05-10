@@ -1,0 +1,15 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-list-allowlist",
+      "description": "List trusted paths",
+      "commands": {
+        "allow": [
+          "list_allowlist"
+        ],
+        "deny": []
+      }
+    }
+  ]
+}

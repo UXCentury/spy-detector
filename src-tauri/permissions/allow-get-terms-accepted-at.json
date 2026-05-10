@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-get-terms-accepted-at",
+      "description": "Read terms acceptance timestamp",
+      "commands": {
+        "allow": ["get_terms_accepted_at"],
+        "deny": []
+      }
+    }
+  ]
+}

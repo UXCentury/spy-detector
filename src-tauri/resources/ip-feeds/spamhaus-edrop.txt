@@ -1,0 +1,8 @@
+﻿# Snapshot from https://www.spamhaus.org/drop/edrop.txt fetched 2026-05-09T20:00Z
+# Refresh via the IOC Refresh page in the app
+; This list has been merged into https://www.spamhaus.org/drop/drop.txt
+; Spamhaus EDROP List 2026/05/09 - (c) 2026 The Spamhaus Project SLU
+; https://www.spamhaus.org/drop/edrop.txt
+; Last-Modified: Sat, 09 May 2026 16:14:02 GMT
+; Expires: Sun, 10 May 2026 16:14:02 GMT
+; EOF

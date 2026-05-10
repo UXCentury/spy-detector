@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-count-event-log",
+      "description": "Count event log rows with optional filters",
+      "commands": {
+        "allow": ["count_event_log"],
+        "deny": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-export-latest-scan-markdown",
+      "description": "Export Markdown",
+      "commands": {
+        "allow": [
+          "export_latest_scan_markdown"
+        ],
+        "deny": []
+      }
+    }
+  ]
+}

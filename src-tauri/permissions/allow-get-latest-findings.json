@@ -1,0 +1,15 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-get-latest-findings",
+      "description": "Load latest persisted scan",
+      "commands": {
+        "allow": [
+          "get_latest_findings"
+        ],
+        "deny": []
+      }
+    }
+  ]
+}

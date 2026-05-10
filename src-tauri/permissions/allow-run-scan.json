@@ -1,0 +1,15 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-run-scan",
+      "description": "Run on-demand detection scan",
+      "commands": {
+        "allow": [
+          "run_scan"
+        ],
+        "deny": []
+      }
+    }
+  ]
+}

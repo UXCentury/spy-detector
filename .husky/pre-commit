@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+
+# Frontend: only the staged files (fast)
+npx lint-staged || exit 1
+
+# TypeScript type-check (fast for the cached project state)
+npx tsc --noEmit || exit 1
+
+# Rust quick checks for the Tauri backend (only if any *.rs file is staged)
+if git diff --cached --name-only --diff-filter=ACM | grep -qE '^src-tauri/.*\.(rs|toml)$'; then
+  echo "rust files staged → running cargo fmt --check + cargo clippy"
+  ( cd src-tauri && cargo fmt --all -- --check ) || exit 1
+  ( cd src-tauri && cargo clippy --all-targets --no-deps -- -D warnings ) || exit 1
+fi
+
+# Frontend tests: only run when src/* changes (skip docs-only commits)
+if git diff --cached --name-only --diff-filter=ACM | grep -qE '^src/'; then
+  echo "frontend files staged → running vitest related tests"
+  # If a test script exists, run only tests related to the staged TS/TSX files for speed.
+  if npm pkg get scripts.test 2>/dev/null | grep -qE '^"[^"]+"'; then
+    npx vitest related $(git diff --cached --name-only --diff-filter=ACM | grep -E '^src/.*\.(ts|tsx)$' | tr '\n' ' ') --run --passWithNoTests || exit 1
+  fi
+fi

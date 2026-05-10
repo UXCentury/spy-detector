@@ -1,0 +1,18 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-startup-items",
+      "description": "List and manage startup entries",
+      "commands": {
+        "allow": [
+          "list_startup_entries",
+          "refresh_startup_entries",
+          "set_startup_entry_enabled",
+          "set_startup_entry_note"
+        ],
+        "deny": []
+      }
+    }
+  ]
+}

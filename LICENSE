@@ -1,0 +1,21 @@
+MIT License
+
+Copyright (c) 2026 Spy Detector Authors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files, including but not limited to the source code, executable files, binaries, installers, configuration files, scripts, documentation, and related materials, to deal in the software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, sell, and/or redistribute copies of the software, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the software.
+
+This software is provided for security analysis, monitoring, research, and defensive purposes only. The software may identify suspicious activity, indicators of compromise, or potentially unwanted behavior, but it does not guarantee detection, prevention, removal, mitigation, or remediation of malware, spyware, unauthorized access, surveillance tools, or other security threats.
+
+The software may produce false positives, false negatives, incomplete results, or inaccurate classifications. Users are solely responsible for reviewing results and deciding whether to take action.
+
+No files, processes, services, registry entries, system settings, or operating system components are modified, quarantined, disabled, deleted, or removed unless explicitly initiated by the user.
+
+THE SOFTWARE IS PROVIDED “AS IS” AND “AS AVAILABLE”, WITHOUT WARRANTY OF ANY KIND, EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, NON-INFRINGEMENT, SECURITY, ACCURACY, AVAILABILITY, OR RELIABILITY.
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW IN ANY COUNTRY, STATE, TERRITORY, OR JURISDICTION, THE AUTHORS, COPYRIGHT HOLDERS, CONTRIBUTORS, DISTRIBUTORS, CODE SIGNING CERTIFICATE HOLDER, AND AFFILIATED PARTIES SHALL NOT BE LIABLE FOR ANY CLAIM, DAMAGES, LOSSES, DATA LOSS, BUSINESS INTERRUPTION, SECURITY INCIDENT, PRIVACY CLAIM, LOST PROFITS, SYSTEM DAMAGE, REGULATORY CLAIM, OR OTHER LIABILITY ARISING FROM OR RELATED TO THE INSTALLATION, USE, MISUSE, INABILITY TO USE, DISTRIBUTION, SIGNING, VERIFICATION, OR PERFORMANCE OF THE SOFTWARE.
+
+Users are solely responsible for compliance with all applicable laws, regulations, export controls, cybersecurity requirements, workplace policies, and privacy obligations in their jurisdiction.
+
+By installing, accessing, executing, modifying, distributing, or using this software, you acknowledge and agree to these terms.

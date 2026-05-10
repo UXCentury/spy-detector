@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-get-ioc-catalog-meta",
+      "description": "Read IOC upstream metadata",
+      "commands": {
+        "allow": ["get_ioc_catalog_meta"],
+        "deny": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-set-language",
+      "description": "Persist onboarding language preference",
+      "commands": {
+        "allow": ["set_language"],
+        "deny": []
+      }
+    }
+  ]
+}

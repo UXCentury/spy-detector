@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-list-ip-feeds",
+      "description": "List public IP blocklist feed status",
+      "commands": {
+        "allow": ["list_ip_feeds"],
+        "deny": []
+      }
+    }
+  ]
+}

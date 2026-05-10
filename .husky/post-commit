@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+
+# Post-commit: run heavier checks in background. Cannot reject the commit.
+# Skip when HUSKY=0 (Husky wrapper also skips running this file).
+
+if [ "${HUSKY:-}" = "0" ]; then
+  exit 0
+fi
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+LOG="$REPO_ROOT/.git/post-commit.log"
+SHA=$(git rev-parse --short HEAD)
+TS=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+
+# Detect changed files in the commit
+CHANGED=$(git diff-tree --no-commit-id --name-only -r HEAD)
+
+NEED_FRONTEND=0
+NEED_RUST=0
+echo "$CHANGED" | grep -qE '^src/' && NEED_FRONTEND=1
+echo "$CHANGED" | grep -qE '^src-tauri/.*\.(rs|toml)$' && NEED_RUST=1
+
+if [ "$NEED_FRONTEND" = "0" ] && [ "$NEED_RUST" = "0" ]; then
+  exit 0
+fi
+
+# Detached background script
+RUNNER="$REPO_ROOT/.husky/_post-commit-run.sh"
+nohup "$RUNNER" "$SHA" "$TS" "$NEED_FRONTEND" "$NEED_RUST" >/dev/null 2>&1 &
+exit 0

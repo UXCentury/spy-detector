@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-scan-browser-history",
+      "description": "Scan browser history against IOC catalog",
+      "commands": {
+        "allow": ["scan_browser_history"],
+        "deny": []
+      }
+    }
+  ]
+}

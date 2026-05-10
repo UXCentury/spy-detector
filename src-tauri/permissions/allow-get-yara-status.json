@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-get-yara-status",
+      "description": "Report bundled YARA rule counts and sources",
+      "commands": {
+        "allow": ["get_yara_status"],
+        "deny": []
+      }
+    }
+  ]
+}

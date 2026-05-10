@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-set-abusech-enabled",
+      "description": "Enable or disable abuse.ch feeds",
+      "commands": {
+        "allow": ["set_abusech_enabled"],
+        "deny": []
+      }
+    }
+  ]
+}

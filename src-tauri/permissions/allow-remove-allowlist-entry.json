@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-remove-allowlist-entry",
+      "description": "Remove path from allowlist",
+      "commands": {
+        "allow": ["remove_allowlist_entry"],
+        "deny": []
+      }
+    }
+  ]
+}

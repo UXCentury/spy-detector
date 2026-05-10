@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-get-monitoring-tick",
+      "description": "Snapshot monitoring heartbeat payload for initial UI render",
+      "commands": {
+        "allow": ["get_monitoring_tick"],
+        "deny": []
+      }
+    }
+  ]
+}

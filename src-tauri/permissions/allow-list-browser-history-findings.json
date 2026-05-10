@@ -1,0 +1,13 @@
+{
+  "default": null,
+  "permission": [
+    {
+      "identifier": "allow-list-browser-history-findings",
+      "description": "List stored browser history findings",
+      "commands": {
+        "allow": ["list_browser_history_findings"],
+        "deny": []
+      }
+    }
+  ]
+}

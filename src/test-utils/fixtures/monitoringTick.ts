@@ -1,0 +1,26 @@
+import type { MonitoringTick } from "@/lib/types/monitoring";
+
+export const SAMPLE_MONITORING_TICK: MonitoringTick = {
+  at: "2026-05-09T12:00:00.000Z",
+  processCount: 42,
+  establishedConnections: 3,
+  latestAlertAt: null,
+  etwProcessActive: true,
+  etwWin32kActive: true,
+  dnsEtwActive: false,
+  dnsCacheSize: 0,
+  cameraMonitorActive: false,
+  activeCameraPids: [],
+  elevated: true,
+  scanInProgress: false,
+  lastScanAt: null,
+  lastScanMaxScore: null,
+  recentLaunches5m: 0,
+  remoteThreadEvents5m: 0,
+  yaraRuleCount: 11,
+  amsiActive: false,
+  amsiDetectionCount: 0,
+  yaraSourceSets: 3,
+  abusechThreatfoxCount: 0,
+  abusechUrlhausCount: 0,
+};
